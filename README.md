@@ -1,6 +1,6 @@
 # anti-defensive-writing-zh
 
-一个给 Claude Code 用的中文写作 Skill：写作、审稿、改稿时，去掉没有依据的自我削弱、重复免责、层层对冲和 AI 套话，同时守住事实、必要的边界和作者自己的语气。
+一个中文写作 Skill，可在 Claude Code、Codex 等支持 Agent Skills 格式（`SKILL.md` 目录）的工具里使用：写作、审稿、改稿时，去掉没有依据的自我削弱、重复免责、层层对冲和 AI 套话，同时守住事实、必要的边界和作者自己的语气。
 
 它不是 AIGC 检测的对抗工具，也不判断作者身份、不输出“AI 含量”分数。目标只有一个：让文字对读者更清楚、更可信。
 
@@ -22,7 +22,9 @@
 
 ## 安装
 
-Skill 就是一个目录，里面有 `SKILL.md`。把这个仓库克隆到 Claude Code 的 skills 目录，目录名保持 `anti-defensive-writing-zh`：
+Skill 就是一个目录，里面有 `SKILL.md`。把这个仓库克隆到所用工具的 skills 目录，目录名保持 `anti-defensive-writing-zh`。
+
+**Claude Code**
 
 macOS / Linux：
 
@@ -36,7 +38,29 @@ Windows（PowerShell）：
 git clone https://github.com/Devilyuu/anti-defensive-writing-zh "$env:USERPROFILE\.claude\skills\anti-defensive-writing-zh"
 ```
 
-重启 Claude Code 后生效。更新时在该目录里 `git pull`。
+重启 Claude Code 后生效。在 Claude.ai 网页端，可以把仓库打成 zip，在设置的 Skills 里上传。
+
+**Codex（CLI、IDE 插件、ChatGPT 桌面端）**
+
+macOS / Linux：
+
+```bash
+git clone https://github.com/Devilyuu/anti-defensive-writing-zh ~/.agents/skills/anti-defensive-writing-zh
+```
+
+Windows（PowerShell）：
+
+```powershell
+git clone https://github.com/Devilyuu/anti-defensive-writing-zh "$env:USERPROFILE\.agents\skills\anti-defensive-writing-zh"
+```
+
+只想在某个项目里用，就克隆到该项目的 `.agents/skills/` 下。Codex 会自动发现新 skill，没出现时重启一次。
+
+**其他工具**：WorkBuddy、CodeBuddy、Cursor、Gemini CLI 等支持 Agent Skills 格式的工具，放进各自文档写明的 skills 目录即可。
+
+**ChatGPT 网页端等不能装 skill 的环境**：新建一个自定义 GPT 或 Project，把 `SKILL.md` 和 `references/` 下的四个文件作为知识文件上传，指令里写“按 SKILL.md 的流程写作和改稿，需要时查 references”。`SKILL.md` 较长，放在知识文件里比直接贴进指令框稳。临时用也可以在对话开头贴 `SKILL.md` 全文，再贴稿子。这种用法不会自动触发，长稿深改时模型也不一定把 references 读全，效果比在 Agent 工具里差一些。
+
+更新时在 skill 目录里 `git pull`。
 
 ## 怎么用
 
@@ -55,6 +79,8 @@ git clone https://github.com/Devilyuu/anti-defensive-writing-zh "$env:USERPROFIL
 ```text
 只诊断，别改。告诉我这段哪几处最有问题、为什么、往哪个方向改。
 ```
+
+项目里有 `CLAUDE.md`、`AGENTS.md` 等说明文件、术语表或样例稿时，它会先按项目约定和样例的语气来写，再套用自己的通用规则。
 
 只处理中文正文，不做翻译、纯摘要或代码注释。
 

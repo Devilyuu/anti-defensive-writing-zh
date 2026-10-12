@@ -1,5 +1,12 @@
 # 更新记录
 
+## 未发布（2026-10-12）
+
+兼容 Codex 等其他 Agent 工具。
+
+- `SKILL.md` 第 5 步“调语气”的优先级里，“项目内的 CLAUDE.md”改为“项目内的 CLAUDE.md、AGENTS.md 等说明文件”，在 Codex 等用 `AGENTS.md` 的工具里也会先读项目约定。
+- README：说明 Claude Code 以外也能用，补 Codex 的安装路径（`~/.agents/skills/` 或项目内 `.agents/skills/`）、其他支持 Agent Skills 格式的工具，以及 ChatGPT 网页端用知识文件加载的办法和局限。
+
 ## 2.1（2026-10-03）
 
 依据用户整理的《AI 生成文档常见痕迹梳理》（25 类痕迹和 10 项检查表）补齐覆盖，并修正第四轮评测暴露的问题。

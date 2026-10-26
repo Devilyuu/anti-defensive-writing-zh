@@ -14,10 +14,11 @@
     数值互换（“修了 3 个 bug、上了 12 个功能”互换后数字仍在）；
     “多数”改成“全部”、相关改成因果、参与改成负责；
     否定反转时数字仍在（“不足 10%”改成“超过 10%”只会报出“不足”少了一个）；
-    中文数字只覆盖常见量词组合（三倍、两小时、五十人），不覆盖所有写法。
+    中文数字只覆盖常见量词组合（三倍、两小时、五十人），不覆盖所有写法；“十分”“万分”“百分”按成语处理，不当数字。
 
 退出码：发现硬信息缺失或新增时返回 1，否则 0。零依赖，Python 3.8+。
 """
+import os
 import re
 import sys
 from collections import Counter
@@ -74,6 +75,7 @@ def strip_code(text):
 
 
 MASK_FIRST = ("URL", "引用标记", "代码块")
+IDIOM_NUMBERS = {"十分", "万分", "百分"}
 
 
 def extract(text):
@@ -88,6 +90,8 @@ def extract(text):
         for r in regs:
             for m in re.finditer(r, source):
                 token = re.sub(r"\s+", "", m.group(0))
+                if name == "数字" and token in IDIOM_NUMBERS:
+                    continue
                 bag[token] += 1
         found[name] = bag
     return found
@@ -111,11 +115,16 @@ def semantic_bags(text):
 
 
 def main(argv):
-    if len(argv) < 3:
+    paths = [a for a in argv[1:] if not a.startswith("--")]
+    if len(paths) < 2:
         print(__doc__)
         return 2
+    missing = [p for p in paths[:2] if not os.path.isfile(p)]
+    if missing:
+        print("找不到文件：" + "、".join(missing))
+        return 2
     quiet = "--quiet" in argv
-    src, dst = read(argv[1]), read(argv[2])
+    src, dst = read(paths[0]), read(paths[1])
     a, b = extract(src), extract(dst)
     problems = 0
     lines = []
